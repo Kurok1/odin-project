@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>indi.odin</groupId>
+    <artifactId>odin-project</artifactId>
+    <packaging>pom</packaging>
+    <version>${revision}</version>
+    <modules>
+        <module>odin-client</module>
+        <module>odin-spring-boot-starter</module>
+        <module>odin-sample</module>
+    </modules>
+
+    <properties>
+        <revision>1.0.0</revision>
+
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <rabbitmq-client.version>5.13.1</rabbitmq-client.version>
+        <spring-boot.version>2.6.5</spring-boot.version>
+        <kafka.version>2.8.1</kafka.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>indi.odin</groupId>
+                <artifactId>odin-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.rabbitmq</groupId>
+                <artifactId>amqp-client</artifactId>
+                <version>${rabbitmq-client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.version}</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+
+</project>
