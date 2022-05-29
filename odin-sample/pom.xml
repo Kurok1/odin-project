@@ -2,15 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>odin-project</artifactId>
-        <groupId>indi.odin</groupId>
-        <version>${revision}</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>indi.odin</groupId>
     <artifactId>odin-sample</artifactId>
     <packaging>pom</packaging>
+    <version>1.0.0</version>
     <modules>
         <module>odin-sample-spring-boot-starter</module>
         <module>odin-rabbitmq-sample</module>
@@ -19,6 +16,9 @@
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+
+        <spring-boot.version>2.6.5</spring-boot.version>
+        <odin.version>1.0.0</odin.version>
     </properties>
 
     <dependencyManagement>
@@ -33,12 +33,12 @@
             <dependency>
                 <groupId>indi.odin</groupId>
                 <artifactId>odin-spring-boot-starter</artifactId>
-                <version>${revision}</version>
+                <version>${odin.version}</version>
             </dependency>
             <dependency>
                 <groupId>indi.odin</groupId>
                 <artifactId>odin-client</artifactId>
-                <version>${revision}</version>
+                <version>${odin.version}</version>
             </dependency>
 
 
