@@ -27,7 +27,7 @@ public class ReturnCallbackAdapter implements ReturnCallback {
         metaData.setRoutingKey(returnMessage.getRoutingKey());
         metaData.setBasicProperties(returnMessage.getProperties());
 
-        return new RabbitmqMessage(returnMessage.getBody(), metaData);
+        return new RabbitmqMessage(null, returnMessage.getBody(), metaData);
     }
 
     @Override
