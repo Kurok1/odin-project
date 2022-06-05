@@ -5,8 +5,12 @@ import indi.odin.client.rabbitmq.RabbitmqMessage;
 import indi.odin.client.rabbitmq.RabbitmqMessageMetaData;
 import indi.odin.consumer.HandleResponse;
 import indi.odin.consumer.MessageProcessor;
+import indi.odin.io.Deserializer;
+import indi.odin.io.DeserializerFactory;
+import indi.odin.io.Serializer;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * TODO
@@ -61,7 +65,13 @@ public class RabbitMqConsumer implements Consumer {
         metaData.setExchange(envelope.getExchange());
         metaData.setBasicProperties(properties);
 
-        RabbitmqMessage message = new RabbitmqMessage(body, metaData);
+        String deserializerClass = properties.getHeaders().get(Serializer.DESERIALIZER_CLASS_CONFIG_KEY).toString();
+
+        Deserializer<?> deserializer = DeserializerFactory.INSTANCE.retrieveOrDefault(deserializerClass);
+
+        Object target = deserializer.decode(body);
+
+        RabbitmqMessage message = new RabbitmqMessage(target, body, metaData);
 
         HandleResponse response = this.messageProcessor.onMessage(this.queueName, message);
 

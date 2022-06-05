@@ -19,6 +19,7 @@ public class TestConsumer implements MessageProcessor<RabbitmqMessage> {
     @Override
     public HandleResponse onMessage(String queueName, RabbitmqMessage message) {
         String str = new String(message.getSources(), StandardCharsets.UTF_8);
+        System.out.println("current thread is " + Thread.currentThread().getName());
         System.out.printf("received queue [%s] and body is [%s]", queueName, str);
         return HandleResponse.SUCCESS;
     }

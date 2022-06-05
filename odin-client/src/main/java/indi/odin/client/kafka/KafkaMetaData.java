@@ -54,6 +54,10 @@ public class KafkaMetaData extends MessageMetaData {
         this.headerEntries.add(new HeaderEntry(key, value));
     }
 
+    public void addHeader(Header header) {
+        this.headerEntries.add(header);
+    }
+
     public Iterable<Header> getHeaderEntries() {
         return headerEntries;
     }

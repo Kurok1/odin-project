@@ -8,7 +8,7 @@ import indi.odin.consumer.rabbitmq.RabbitmqListener;
 /**
  * 监听这创建工厂
  *
- * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
+ * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
 public class ListenerFactory {

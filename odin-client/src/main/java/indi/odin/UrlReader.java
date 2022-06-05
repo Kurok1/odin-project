@@ -4,9 +4,9 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * TODO
+ * url解析
  *
- * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
+ * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
 public class UrlReader {

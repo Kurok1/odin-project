@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * 消息监听
  *
- * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
+ * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
 @Target(ElementType.TYPE)

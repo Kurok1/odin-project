@@ -5,6 +5,7 @@ import indi.odin.exception.ChannelClosedException;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Properties;
 
 /**
@@ -21,13 +22,13 @@ public interface Channel extends Closeable {
 
     void setDefaultCallback(Callback callback);
 
-    void sendMessage(Object message) throws IOException;
+    <T extends Serializable> void sendMessage(T message) throws IOException;
 
-    void sendMessage(Object message, Properties headers) throws IOException;
+    <T extends Serializable> void sendMessage(T message, Properties headers) throws IOException;
 
-    void sendMessage(Object message, Callback callback) throws IOException;
+    <T extends Serializable> void sendMessage(T message, Callback callback) throws IOException;
 
-    void sendMessage(Object message, Properties propheaderserties, Callback callback) throws IOException;
+    <T extends Serializable> void sendMessage(T message, Properties properties, Callback callback) throws IOException;
 
     boolean isOpen();
 

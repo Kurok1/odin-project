@@ -31,7 +31,7 @@ public class MessageListenerRegistrar implements ImportBeanDefinitionRegistrar,
     private ResourceLoader resourceLoader;
     private Environment environment;
 
-    private TypeFilter typeFilter = new AnnotationTypeFilter(MessageListener.class);
+    private final TypeFilter typeFilter = new AnnotationTypeFilter(MessageListener.class);
 
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {

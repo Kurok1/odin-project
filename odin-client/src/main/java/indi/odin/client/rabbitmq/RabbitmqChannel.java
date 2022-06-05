@@ -5,6 +5,7 @@ import indi.odin.client.Callback;
 import indi.odin.client.Channel;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Properties;
@@ -69,24 +70,24 @@ public class RabbitmqChannel implements Channel {
     }
 
     @Override
-    public void sendMessage(Object message) throws IOException {
+    public <T extends Serializable> void sendMessage(T message) throws IOException {
         sendMessage(message, new Properties());
     }
 
     @Override
-    public void sendMessage(Object message, Properties headers) throws IOException {
+    public <T extends Serializable> void sendMessage(T message, Properties headers) throws IOException {
         sendMessage(message, headers, this.defaultCallback.orElse(null));
     }
 
     @Override
-    public void sendMessage(Object message, Callback callback) throws IOException {
+    public <T extends Serializable> void sendMessage(T message, Callback callback) throws IOException {
         if (callback == null)
             throw new NullPointerException();
         sendMessage(message, new Properties(), callback);
     }
 
     @Override
-    public void sendMessage(Object message, Properties headers, Callback callback) throws IOException {
+    public <T extends Serializable> void sendMessage(T message, Properties headers, Callback callback) throws IOException {
         checkClosed();
         //解析元信息
         RabbitmqMessageMetaData metaData = new RabbitmqMessageMetaData();
@@ -97,7 +98,7 @@ public class RabbitmqChannel implements Channel {
                             .put(property, headers.getProperty(property))
             );
         }
-        RabbitmqMessage rabbitmqMessage = this.assembler.mapping(message, metaData);
+        RabbitmqMessage<?> rabbitmqMessage = this.assembler.mapping(message, metaData);
         try {
             this.delegateChannel.basicPublish(this.exchangeName, this.routingKey, rabbitmqMessage.metaData().getBasicProperties(), rabbitmqMessage.getSources());
             if (callback != null)

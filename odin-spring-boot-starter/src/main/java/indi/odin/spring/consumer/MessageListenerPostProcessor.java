@@ -20,7 +20,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 /**
  * 消息监听处理，注册到{@link indi.odin.consumer.ListenerExecutor}
  *
- * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
+ * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
 public class MessageListenerPostProcessor implements BeanPostProcessor, BeanFactoryAware {

@@ -65,8 +65,8 @@ public abstract class AbstractListener implements Listener {
     @Override
     public void start() {
         try {
-            startInternal();
             this.isRunning = true;
+            startInternal();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -78,8 +78,8 @@ public abstract class AbstractListener implements Listener {
     @Override
     public void stop() {
         try {
-            stopInternal();
             this.isRunning = false;
+            stopInternal();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

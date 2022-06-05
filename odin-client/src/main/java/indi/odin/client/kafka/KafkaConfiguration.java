@@ -19,6 +19,8 @@ public class KafkaConfiguration extends BasicConfiguration {
     private String topic;
     private Class<? extends Partitioner> partitionerClass = DefaultPartitioner.class;
 
+    private String groupId;
+
     public String getTopic() {
         return topic;
     }
@@ -56,4 +58,11 @@ public class KafkaConfiguration extends BasicConfiguration {
         return boostrapServerList;
     }
 
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
 }

@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Properties;
 import java.util.Set;
@@ -54,17 +55,17 @@ public class KafkaChannel implements Channel {
     }
 
     @Override
-    public void sendMessage(Object message) throws IOException {
+    public <T extends Serializable> void sendMessage(T message) throws IOException {
         sendMessage(message, null, this.defaultCallback);
     }
 
     @Override
-    public void sendMessage(Object message, Properties headers) throws IOException {
+    public <T extends Serializable> void sendMessage(T message, Properties headers) throws IOException {
         sendMessage(message, headers, this.defaultCallback);
     }
 
     @Override
-    public void sendMessage(Object message, Callback callback) throws IOException {
+    public <T extends Serializable> void sendMessage(T message, Callback callback) throws IOException {
         if (callback == null)
             throw new NullPointerException();
 
@@ -72,11 +73,11 @@ public class KafkaChannel implements Channel {
     }
 
     @Override
-    public void sendMessage(Object message, Properties headers, Callback callback) throws IOException {
+    public <T extends Serializable> void sendMessage(T message, Properties headers, Callback callback) throws IOException {
         checkClosed();
 
         KafkaMetaData metaData = buildMetaData(headers);
-        KafkaMessage kafkaMessage = this.assembler.mapping(message, metaData);
+        KafkaMessage<T> kafkaMessage = this.assembler.mapping(message, metaData);
         org.apache.kafka.clients.producer.Callback callbackAdapter = makeCallback(kafkaMessage, callback);
 
         Future<RecordMetadata> recordMetadataFuture = this.producer.send(kafkaMessage.convert(), callbackAdapter);

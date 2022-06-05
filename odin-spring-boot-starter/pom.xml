@@ -20,6 +20,7 @@
         <dependency>
             <groupId>indi.odin</groupId>
             <artifactId>odin-client</artifactId>
+            <version>${revision}</version>
         </dependency>
 
         <dependency>

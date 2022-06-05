@@ -5,6 +5,7 @@ import indi.odin.MessageMetaData;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Kafka消息组装
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class KafkaMessageAssembler implements MessageAssembler<KafkaMessage> {
 
     @Override
-    public KafkaMessage mapping(Object data, MessageMetaData metaData) throws IOException {
-        return new KafkaMessage((KafkaMetaData) metaData, data);
+    public <E extends Serializable> KafkaMessage<E> mapping(E data, MessageMetaData metaData) throws IOException {
+        return new KafkaMessage<>((KafkaMetaData) metaData, data);
     }
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
-public class JvmSerializer implements Serializer {
+public class JvmSerializer implements Serializer<Object> {
 
     @Override
     public boolean support(Class<?> clazz, Object data) {
@@ -27,5 +27,11 @@ public class JvmSerializer implements Serializer {
             objectOutputStream.writeObject(data);
             return outputStream.toByteArray();
         }
+    }
+
+    @Override
+    public Class<? extends Deserializer<?>> mappingDeserializerClass() {
+        return JvmDeserializer.class;
+
     }
 }

@@ -31,8 +31,8 @@ public class OdinAutoConfiguration {
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public Serializers serializers(ObjectProvider<Collection<Serializer>> provider) {
-        Collection<Serializer> serializerCollection = provider.getIfAvailable();
+    public Serializers serializers(ObjectProvider<Collection<Serializer<?>>> provider) {
+        Collection<Serializer<?>> serializerCollection = provider.getIfAvailable();
         if (serializerCollection != null && !serializerCollection.isEmpty())
             return new Serializers(serializerCollection);
 

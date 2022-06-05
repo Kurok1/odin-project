@@ -15,9 +15,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Serializers {
 
-    private List<Serializer> serializers = new CopyOnWriteArrayList<>();
+    private List<Serializer<?>> serializers = new CopyOnWriteArrayList<>();
 
-    public Serializers(Collection<Serializer> serializers) {
+    public Serializers(Collection<Serializer<?>> serializers) {
         this.serializers.addAll(serializers);
         initializeDefaultSerializers();
         initializeDiscoveredSerializers();
@@ -46,7 +46,7 @@ public class Serializers {
         //第三方加载的工具
     }
 
-    private Serializer findOne(Object data) {
+    public Serializer findOne(Object data) {
         for (Serializer serializer : serializers)
             if (serializer.support(data.getClass(), data))
                 return serializer;

@@ -130,6 +130,7 @@ public class ConnectionSource {
         //todo boostrap server?
         configuration.setServerList(List.of(getServer()));
         configuration.setPartitionerClass(partitionerClass);
+        configuration.setGroupId(this.params.get("groupId"));
 
         return configuration;
     }

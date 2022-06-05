@@ -1,10 +1,12 @@
 package indi.odin.client.kafka;
 
+import indi.odin.exception.NoSuitableSerializerException;
 import indi.odin.io.Serializers;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.Serializer;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -21,12 +23,7 @@ public class KafkaSerializerAdapter implements Serializer<Object> {
 
     @Override
     public byte[] serialize(String topic, Object data) {
-        try {
-            return this.serializers.encode(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
+        return this.serialize(topic, null, data);
     }
 
     @Override
@@ -36,7 +33,18 @@ public class KafkaSerializerAdapter implements Serializer<Object> {
 
     @Override
     public byte[] serialize(String topic, Headers headers, Object data) {
-        return serialize(topic, data);
+        indi.odin.io.Serializer serializer = this.serializers.findOne(data);
+        if (serializer == null)
+            throw new NoSuitableSerializerException();
+        if (headers != null)
+            headers.add(indi.odin.io.Serializer.DESERIALIZER_CLASS_CONFIG_KEY, serializer.mappingDeserializerClass().getName().getBytes(StandardCharsets.UTF_8));
+
+        try {
+            return serializer.encode(data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
