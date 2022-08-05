@@ -12,6 +12,7 @@ import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
@@ -42,14 +43,33 @@ public class KafkaListener extends AbstractListener {
         this.kafkaConsumer.subscribe(registeredQueues);
         while (isRunning()) {
             ConsumerRecords<String, Object> consumerRecords = this.kafkaConsumer.poll(duration);
+            Map<TopicPartition, OffsetAndMetadata> commitData = new HashMap<>();
+            boolean needSeek = false;
+            TopicPartition topicPartition = null;
+            OffsetAndMetadata offsetAndMetadata = null;
             if (!consumerRecords.isEmpty()) {
-                for (ConsumerRecord<String, Object> consumerRecord : consumerRecords)
-                    dispatch(consumerRecord.topic(), consumerRecord);
+                for (ConsumerRecord<String, Object> consumerRecord : consumerRecords) {
+                    String topic = consumerRecord.topic();
+                    int partition = consumerRecord.partition();
+                    HandleResponse response = dispatch(consumerRecord.topic(), consumerRecord);
+                    topicPartition = new TopicPartition(topic, partition);
+                    offsetAndMetadata = new OffsetAndMetadata(consumerRecord.offset());
+                    if (HandleResponse.SUCCESS.equals(response) || HandleResponse.FAILURE.equals(response)) {
+                        commitData.put(topicPartition, offsetAndMetadata);
+                    } else if (HandleResponse.NEED_RESEND.equals(response)) {
+                        needSeek = true;
+                        break;//提前退出，等待下次重试
+                    }
+                }
             }
+            this.kafkaConsumer.commitSync(commitData);
+            if (needSeek)
+                this.kafkaConsumer.seek(topicPartition, offsetAndMetadata);
+
         }
     }
 
-    protected void dispatch(String topic, ConsumerRecord<String, Object> consumerRecord) {
+    protected HandleResponse dispatch(String topic, ConsumerRecord<String, Object> consumerRecord) {
         //convert to kafka message
         KafkaMetaData metaData = new KafkaMetaData();
         consumerRecord.headers().forEach(metaData::addHeader);
@@ -62,15 +82,10 @@ public class KafkaListener extends AbstractListener {
         MessageProcessor<KafkaMessage<?>> messageProcessor = (MessageProcessor<KafkaMessage<?>>) queueMessageProcessorMap.get(topic);
         if (messageProcessor != null) {
             HandleResponse handleResponse = messageProcessor.onMessage(topic, kafkaMessage);
-            handleMessageResult(topic, this.kafkaConsumer, handleResponse, kafkaMessage);
+            return handleResponse;
         }
-    }
 
-    protected void handleMessageResult(String topic, KafkaConsumer<String, Object> kafkaConsumer, HandleResponse handleResponse, KafkaMessage<?> kafkaMessage) {
-        TopicPartition topicPartition = new TopicPartition(topic, kafkaMessage.getPartition());
-        OffsetAndMetadata offsetAndMetadata = new OffsetAndMetadata(kafkaMessage.getOffset());
-
-        kafkaConsumer.commitSync(Map.of(topicPartition, offsetAndMetadata));
+        return HandleResponse.SUCCESS;
     }
 
     @Override
