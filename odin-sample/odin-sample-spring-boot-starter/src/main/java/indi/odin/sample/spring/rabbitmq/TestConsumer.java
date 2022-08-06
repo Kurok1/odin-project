@@ -1,4 +1,4 @@
-package indi.odin.sample.spring;
+package indi.odin.sample.spring.rabbitmq;
 
 import indi.odin.client.rabbitmq.RabbitmqMessage;
 import indi.odin.consumer.HandleResponse;
@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
  * @author <a href="mailto:hanchao@66yunlian.com">韩超</a>
  * @since 1.0.0
  */
-@MessageListener(bindingQueue = {"test-odin"}, connectionKey = "test-consumer")
+//@MessageListener(bindingQueue = {"test-odin"}, connectionKey = "test-consumer")
 public class TestConsumer implements MessageProcessor<RabbitmqMessage> {
 
     @Override

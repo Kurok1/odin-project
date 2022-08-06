@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>odin-rabbitmq-sample</artifactId>
+    <artifactId>odin-kafka-sameple</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -20,9 +20,7 @@
         <dependency>
             <groupId>indi.odin</groupId>
             <artifactId>odin-client</artifactId>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
-
 
 </project>

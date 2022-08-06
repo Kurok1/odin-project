@@ -1,4 +1,4 @@
-package indi.odin.sample.spring;
+package indi.odin.sample.spring.kafka;
 
 import indi.odin.client.Channel;
 import indi.odin.spring.autoconfigure.OdinAutoConfiguration;
@@ -13,20 +13,19 @@ import org.springframework.stereotype.Component;
  * TODO
  *
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
- * @since 1.0.0
+ * @since 1.2.0
  */
 @Component
 @DependsOn({OdinAutoConfiguration.INITIALIZE_BEAN})
-public class OdinRunner implements ApplicationRunner {
+public class KafkaTestSender implements ApplicationRunner {
 
     @Autowired
-    @Qualifier("test-odin")
+    @Qualifier("test-topic")
     private Channel channel;
 
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if (this.channel != null)
-            channel.sendMessage("Hello");
+
     }
 }

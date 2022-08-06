@@ -1,9 +1,16 @@
 odin:
     connectionProperties:
-        - name: "test"
-          url: "rabbitmq://localhost:5672/test-odin?vhost=/test-odin&username=guest&password=guest"
-        - name: "test-consumer"
-          url: "rabbitmq://localhost:5672/?vhost=/test-odin&username=guest&password=guest"
-    rabbitmq:
-        - name: "test-odin"
-          connectionSource: "test"
+#        - name: "test"
+#          url: "rabbitmq://localhost:5672/test-odin?vhost=/test-odin&username=guest&password=guest"
+#        - name: "test-consumer"
+#          url: "rabbitmq://localhost:5672/?vhost=/test-odin&username=guest&password=guest"
+        - name: "test-kafka-producer"
+          url: "kafka://localhost:9092/mytopic?partitionClass=org.apache.kafka.clients.producer.internals.DefaultPartitioner"
+        - name: "test-kafka-consumer"
+          url: "kafka://localhost:9092/mytopic?groupId=test&partitionClass=org.apache.kafka.clients.producer.internals.DefaultPartitioner"
+#    rabbitmq:
+#        - name: "test-odin"
+#          connectionSource: "test"
+    kafka:
+        - name: "test-topic"
+          connectionSource: "test-kafka-producer"
