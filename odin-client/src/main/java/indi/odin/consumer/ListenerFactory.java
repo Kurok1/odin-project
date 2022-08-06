@@ -2,7 +2,9 @@ package indi.odin.consumer;
 
 import indi.odin.SupportProduct;
 import indi.odin.client.BasicConfiguration;
+import indi.odin.client.kafka.KafkaConfiguration;
 import indi.odin.client.rabbitmq.RabbitmqConfiguration;
+import indi.odin.consumer.kafka.KafkaListener;
 import indi.odin.consumer.rabbitmq.RabbitmqListener;
 
 /**
@@ -17,7 +19,7 @@ public class ListenerFactory {
     public static Listener createListener(SupportProduct supportProduct, BasicConfiguration configuration) throws Exception {
         switch (supportProduct) {
             case RABBITMQ: return new RabbitmqListener((RabbitmqConfiguration) configuration);
-            case KAFKA:
+            case KAFKA: return new KafkaListener((KafkaConfiguration) configuration);
             case ROCKETMQ:
             default: throw new UnsupportedOperationException();
         }

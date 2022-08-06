@@ -30,6 +30,7 @@ public class KafkaChannelFactory implements ChannelFactory<KafkaChannel, KafkaCo
         Properties properties = new Properties();
         properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, configuration.getBootstrapServerList());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaSerializerAdapter.class.getName());
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, KafkaSerializerAdapter.class.getName());
         properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, configuration.getPartitionerClass().getName());
         properties.put(KafkaSerializerAdapter.SERIALIZER_INSTANCE, serializers);
 

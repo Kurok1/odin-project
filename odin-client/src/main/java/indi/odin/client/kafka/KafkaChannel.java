@@ -28,7 +28,7 @@ public class KafkaChannel implements Channel {
     private final String name;
     private final String queueName;
     private final KafkaMessageAssembler assembler;
-    private Callback defaultCallback = null;
+    private Callback defaultCallback = Callback.NOTHING;
 
     private volatile boolean open = true;
 
@@ -81,7 +81,7 @@ public class KafkaChannel implements Channel {
         org.apache.kafka.clients.producer.Callback callbackAdapter = makeCallback(kafkaMessage, callback);
 
         Future<RecordMetadata> recordMetadataFuture = this.producer.send(kafkaMessage.convert(), callbackAdapter);
-
+        this.producer.flush();
         try {
             //同步发送
             recordMetadataFuture.get();

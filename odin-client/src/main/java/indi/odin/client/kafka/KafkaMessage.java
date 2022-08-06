@@ -21,7 +21,7 @@ public class KafkaMessage<T extends Serializable> implements Message<T> {
     private int partition = 0;
     private long offset = 0L;
 
-    private String key;
+    private String key = "";
 
     public KafkaMessage(KafkaMetaData metaData, Object source) {
         this.metaData = metaData;

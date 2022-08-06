@@ -14,4 +14,17 @@ public interface Callback {
 
     void onFailure(Message message, Channel channel, String errorMessage);
 
+
+    Callback NOTHING = new Callback() {
+        @Override
+        public void onSuccess(Message message, Channel channel) {
+
+        }
+
+        @Override
+        public void onFailure(Message message, Channel channel, String errorMessage) {
+
+        }
+    };
+
 }

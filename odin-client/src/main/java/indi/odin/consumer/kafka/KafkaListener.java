@@ -32,8 +32,10 @@ public class KafkaListener extends AbstractListener {
     public KafkaListener(KafkaConfiguration configuration) {
         Properties properties = new Properties();
         properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, configuration.getBootstrapServerList());
-        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaSerializerAdapter.class.getName());
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaDeserializerAdapter.class.getName());
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, KafkaDeserializerAdapter.class.getName());
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, configuration.getGroupId());
+        properties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         this.kafkaConsumer = new KafkaConsumer<>(properties);
     }
 
@@ -43,28 +45,30 @@ public class KafkaListener extends AbstractListener {
         this.kafkaConsumer.subscribe(registeredQueues);
         while (isRunning()) {
             ConsumerRecords<String, Object> consumerRecords = this.kafkaConsumer.poll(duration);
-            Map<TopicPartition, OffsetAndMetadata> commitData = new HashMap<>();
-            boolean needSeek = false;
-            TopicPartition topicPartition = null;
-            OffsetAndMetadata offsetAndMetadata = null;
             if (!consumerRecords.isEmpty()) {
+                boolean needSeek = false;
+                Map<TopicPartition, OffsetAndMetadata> commitData = new HashMap<>();
+                TopicPartition topicPartition = null;
+                OffsetAndMetadata offsetAndMetadata = null;
                 for (ConsumerRecord<String, Object> consumerRecord : consumerRecords) {
                     String topic = consumerRecord.topic();
                     int partition = consumerRecord.partition();
                     HandleResponse response = dispatch(consumerRecord.topic(), consumerRecord);
                     topicPartition = new TopicPartition(topic, partition);
-                    offsetAndMetadata = new OffsetAndMetadata(consumerRecord.offset());
+                    offsetAndMetadata = new OffsetAndMetadata(consumerRecord.offset() + 1);
                     if (HandleResponse.SUCCESS.equals(response) || HandleResponse.FAILURE.equals(response)) {
                         commitData.put(topicPartition, offsetAndMetadata);
                     } else if (HandleResponse.NEED_RESEND.equals(response)) {
+                        offsetAndMetadata = new OffsetAndMetadata(consumerRecord.offset());
                         needSeek = true;
                         break;//提前退出，等待下次重试
                     }
                 }
+                this.kafkaConsumer.commitSync(commitData);
+                if (needSeek)
+                    this.kafkaConsumer.seek(topicPartition, offsetAndMetadata);
             }
-            this.kafkaConsumer.commitSync(commitData);
-            if (needSeek)
-                this.kafkaConsumer.seek(topicPartition, offsetAndMetadata);
+
 
         }
     }

@@ -33,6 +33,8 @@ public class KafkaSerializerAdapter implements Serializer<Object> {
 
     @Override
     public byte[] serialize(String topic, Headers headers, Object data) {
+        if (data == null)
+            return null;
         indi.odin.io.Serializer serializer = this.serializers.findOne(data);
         if (serializer == null)
             throw new NoSuitableSerializerException();

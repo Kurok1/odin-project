@@ -27,11 +27,16 @@ public class KafkaCallbackAdapter implements Callback {
 
     @Override
     public void onCompletion(RecordMetadata metadata, Exception exception) {
+        if (metadata == null) {
+            this.delegate.onFailure(this.kafkaMessage, this.channel, exception.getMessage());
+            return;
+        }
+
         this.kafkaMessage.setPartition(metadata.partition());
         this.kafkaMessage.setOffset(metadata.offset());
-        if (isError(metadata))
+        if (exception != null) {
             this.delegate.onFailure(this.kafkaMessage, this.channel, exception.getMessage());
-        else this.delegate.onSuccess(this.kafkaMessage, this.channel);
+        } else this.delegate.onSuccess(this.kafkaMessage, this.channel);
     }
 
     private boolean isError(RecordMetadata metadata) {
