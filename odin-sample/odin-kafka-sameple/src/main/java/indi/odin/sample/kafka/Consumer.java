@@ -1,13 +1,13 @@
 package indi.odin.sample.kafka;
 
 import indi.odin.ConnectionSource;
-import indi.odin.Message;
-import indi.odin.client.kafka.KafkaConfiguration;
-import indi.odin.client.kafka.KafkaMessage;
 import indi.odin.consumer.HandleResponse;
 import indi.odin.consumer.Listener;
 import indi.odin.consumer.ListenerFactory;
 import indi.odin.consumer.MessageProcessor;
+import indi.odin.kafka.KafkaConnectionSource;
+import indi.odin.kafka.client.KafkaConfiguration;
+import indi.odin.kafka.client.KafkaMessage;
 
 /**
  * TODO
@@ -22,7 +22,7 @@ public class Consumer {
 
     public static void main(String[] args) throws Exception {
 
-        ConnectionSource connectionSource = new ConnectionSource("test-kafak", connectionStr);
+        ConnectionSource<KafkaConfiguration> connectionSource = new KafkaConnectionSource("test-kafak", connectionStr);
         KafkaConfiguration kafkaConfiguration = (KafkaConfiguration) connectionSource.resolveConfiguration();
         Listener listener = ListenerFactory.createListener(connectionSource.getProduct(), kafkaConfiguration);
 

@@ -1,15 +1,14 @@
 package indi.odin.sample.rabbitmq;
 
-import indi.odin.ConnectionPool;
 import indi.odin.ConnectionSource;
 import indi.odin.Message;
-import indi.odin.client.BasicConfiguration;
 import indi.odin.client.Callback;
 import indi.odin.client.Channel;
-import indi.odin.client.rabbitmq.RabbitmqChannelFactory;
-import indi.odin.client.rabbitmq.RabbitmqConfiguration;
-import indi.odin.client.rabbitmq.RabbitmqMessageAssembler;
 import indi.odin.io.Serializers;
+import indi.odin.rabbitmq.RabbitConnectionSource;
+import indi.odin.rabbitmq.client.RabbitmqChannelFactory;
+import indi.odin.rabbitmq.client.RabbitmqConfiguration;
+import indi.odin.rabbitmq.client.RabbitmqMessageAssembler;
 
 /**
  * rabbitmq producer
@@ -22,7 +21,7 @@ public class Producer {
     private static final String connectionStr = "rabbitmq://localhost:5672/test-odin?vhost=/test-odin&username=guest&password=guest";
 
     public static void main(String[] args) throws Exception {
-        ConnectionSource connectionSource = new ConnectionSource("test-producer", connectionStr);
+        ConnectionSource<RabbitmqConfiguration> connectionSource = new RabbitConnectionSource("test-producer", connectionStr);
 
         RabbitmqConfiguration configuration = (RabbitmqConfiguration) connectionSource.resolveConfiguration();
         Serializers serializers = new Serializers();

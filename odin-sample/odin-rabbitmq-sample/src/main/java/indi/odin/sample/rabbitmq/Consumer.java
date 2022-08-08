@@ -1,9 +1,10 @@
 package indi.odin.sample.rabbitmq;
 
 import indi.odin.ConnectionSource;
-import indi.odin.client.rabbitmq.RabbitmqConfiguration;
-import indi.odin.client.rabbitmq.RabbitmqMessage;
 import indi.odin.consumer.*;
+import indi.odin.rabbitmq.RabbitConnectionSource;
+import indi.odin.rabbitmq.client.RabbitmqConfiguration;
+import indi.odin.rabbitmq.client.RabbitmqMessage;
 
 import java.nio.charset.StandardCharsets;
 
@@ -19,7 +20,7 @@ public class Consumer {
     private static final String bindQueue = "test-odin";
 
     public static void main(String[] args) throws Exception {
-        final ConnectionSource connectionSource = new ConnectionSource("test-consumer", connectionStr);
+        final ConnectionSource<RabbitmqConfiguration> connectionSource = new RabbitConnectionSource("test-consumer", connectionStr);
         RabbitmqConfiguration configuration = (RabbitmqConfiguration) connectionSource.resolveConfiguration();
 
         Listener listener = ListenerFactory.createListener(connectionSource.getProduct(), configuration);

@@ -7,10 +7,11 @@
     <groupId>indi.odin</groupId>
     <artifactId>odin-project</artifactId>
     <packaging>pom</packaging>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
     <modules>
-        <module>odin-client</module>
-        <module>odin-spring-boot-starter</module>
+        <module>odin-core</module>
+        <module>odin-rabbit</module>
+        <module>odin-kafka</module>
     </modules>
 
     <properties>
@@ -31,14 +32,6 @@
                 <groupId>com.rabbitmq</groupId>
                 <artifactId>amqp-client</artifactId>
                 <version>${rabbitmq-client.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->

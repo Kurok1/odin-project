@@ -15,18 +15,18 @@ import org.springframework.stereotype.Component;
  * @author <a href="mailto:maimengzzz@gmail.com">韩超</a>
  * @since 1.0.0
  */
-//@Component
-//@DependsOn({OdinAutoConfiguration.INITIALIZE_BEAN})
-//public class OdinRunner implements ApplicationRunner {
-//
-//    @Autowired
-//    @Qualifier("test-odin")
-//    private Channel channel;
-//
-//
-//    @Override
-//    public void run(ApplicationArguments args) throws Exception {
-//        if (this.channel != null)
-//            channel.sendMessage("Hello");
-//    }
-//}
+@Component
+@DependsOn({OdinAutoConfiguration.INITIALIZE_RABBIT_BEAN})
+public class OdinRunner implements ApplicationRunner {
+
+    @Autowired
+    @Qualifier("test-odin")
+    private Channel channel;
+
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        if (this.channel != null)
+            channel.sendMessage("Hello");
+    }
+}

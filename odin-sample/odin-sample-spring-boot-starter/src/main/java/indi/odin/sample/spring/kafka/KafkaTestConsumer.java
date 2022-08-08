@@ -1,12 +1,9 @@
 package indi.odin.sample.spring.kafka;
 
-import indi.odin.client.kafka.KafkaMessage;
-import indi.odin.client.rabbitmq.RabbitmqMessage;
 import indi.odin.consumer.HandleResponse;
 import indi.odin.consumer.MessageProcessor;
+import indi.odin.kafka.client.KafkaMessage;
 import indi.odin.spring.consumer.MessageListener;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * TODO

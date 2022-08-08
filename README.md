@@ -20,7 +20,7 @@ public class Producer {
     private static final String connectionStr = "rabbitmq://localhost:5672/test-odin?vhost=/test-odin&username=guest&password=guest";
 
     public static void main(String[] args) throws Exception {
-        ConnectionSource connectionSource = new ConnectionSource("test-producer", connectionStr);
+        ConnectionSource<RabbitmqConfiguration> connectionSource = new RabbitConnectionSource("test-producer", connectionStr);
 
         RabbitmqConfiguration configuration = (RabbitmqConfiguration) connectionSource.resolveConfiguration();
         Serializers serializers = new Serializers();
@@ -55,7 +55,7 @@ public class Consumer {
     private static final String bindQueue = "test-odin";
 
     public static void main(String[] args) throws Exception {
-        final ConnectionSource connectionSource = new ConnectionSource("test-consumer", connectionStr);
+        final ConnectionSource<RabbitmqConfiguration> connectionSource = new RabbitConnectionSource("test-consumer", connectionStr);
         RabbitmqConfiguration configuration = (RabbitmqConfiguration) connectionSource.resolveConfiguration();
 
         Listener listener = ListenerFactory.createListener(connectionSource.getProduct(), configuration);
@@ -93,6 +93,10 @@ Spring Boot Starter
             <groupId>indi.odin</groupId>
             <artifactId>odin-spring-boot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>indi.odin</groupId>
+            <artifactId>odin-spring-boot-starter-rabbit</artifactId>
+        </dependency>
 </dependencies>
 ```
 
@@ -114,7 +118,7 @@ odin:
 
 ```java
 @Component
-@DependsOn({OdinAutoConfiguration.INITIALIZE_BEAN})
+@DependsOn({OdinAutoConfiguration.INITIALIZE_RABBIT_BEAN})
 public class OdinRunner implements ApplicationRunner {
 
     @Autowired

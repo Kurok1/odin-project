@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  * @since 1.2.0
  */
 @Component
-@DependsOn({OdinAutoConfiguration.INITIALIZE_BEAN})
+@DependsOn({OdinAutoConfiguration.INITIALIZE_KAFKA_BEAN})
 public class KafkaTestSender implements ApplicationRunner {
 
     @Autowired
@@ -26,6 +26,6 @@ public class KafkaTestSender implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
+        channel.sendMessage("Hello Odin spring-boot sample");
     }
 }

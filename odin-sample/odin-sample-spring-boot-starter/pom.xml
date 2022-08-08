@@ -5,7 +5,7 @@
     <parent>
         <artifactId>odin-sample</artifactId>
         <groupId>indi.odin</groupId>
-        <version>1.2.1</version>
+        <version>1.3.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,7 +20,12 @@
 
         <dependency>
             <groupId>indi.odin</groupId>
-            <artifactId>odin-spring-boot-starter</artifactId>
+            <artifactId>odin-spring-boot-starter-rabbit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>indi.odin</groupId>
+            <artifactId>odin-spring-boot-starter-kafka</artifactId>
         </dependency>
 
         <dependency>

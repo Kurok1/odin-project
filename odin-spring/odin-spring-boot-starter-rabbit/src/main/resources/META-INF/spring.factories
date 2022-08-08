@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=indi.odin.spring.rabbitmq.RabbitMQConnectionRegister,\
+  indi.odin.spring.rabbitmq.RabbitmqOdinAutoConfiguration

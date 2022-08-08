@@ -4,10 +4,11 @@ import indi.odin.ConnectionSource;
 import indi.odin.Message;
 import indi.odin.client.Callback;
 import indi.odin.client.Channel;
-import indi.odin.client.kafka.KafkaChannelFactory;
-import indi.odin.client.kafka.KafkaConfiguration;
-import indi.odin.client.kafka.KafkaMessageAssembler;
 import indi.odin.io.Serializers;
+import indi.odin.kafka.KafkaConnectionSource;
+import indi.odin.kafka.client.KafkaChannelFactory;
+import indi.odin.kafka.client.KafkaConfiguration;
+import indi.odin.kafka.client.KafkaMessageAssembler;
 
 /**
  * TODO
@@ -20,7 +21,7 @@ public class Producer {
     private static final String connectionStr = "kafka://localhost:9092/mytopic?partitionClass=org.apache.kafka.clients.producer.internals.DefaultPartitioner";
 
     public static void main(String[] args) throws Exception {
-        ConnectionSource source = new ConnectionSource("test-kafka", connectionStr);
+        ConnectionSource<KafkaConfiguration> source = new KafkaConnectionSource("test-kafka", connectionStr);
         KafkaConfiguration kafkaConfiguration = (KafkaConfiguration) source.resolveConfiguration();
         Serializers serializers = new Serializers();
         KafkaMessageAssembler assembler = new KafkaMessageAssembler();
@@ -28,7 +29,7 @@ public class Producer {
 
         Channel channel = channelFactory.create("mytopic", kafkaConfiguration);
 
-        channel.sendMessage("Hello, Kafka", new Callback() {
+        channel.sendMessage("Hello, Kafka V1.3.0", new Callback() {
             @Override
             public void onSuccess(Message message, Channel channel) {
                 System.out.println("send ok");
